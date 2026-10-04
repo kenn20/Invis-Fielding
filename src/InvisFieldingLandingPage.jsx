@@ -39,6 +39,10 @@ function Signup({ signupEndpoint }) {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: normalized }), signal: controller.current.signal,
       });
+      if (response.status === 429) {
+        setStatus('error'); setError('Too many requests. Please wait a minute and try again.');
+        return;
+      }
       const result = await response.json();
       if (!response.ok || result.ok !== true) throw new Error('Signup failed');
       setStatus('confirmed');

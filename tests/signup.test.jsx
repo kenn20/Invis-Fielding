@@ -50,4 +50,14 @@ describe('interest form', () => {
     await waitFor(() => expect(screen.getByRole('alert').textContent).toMatch(/valid email/));
     expect(fetch).not.toHaveBeenCalled();
   });
+  it('shows the rate-limit retry message and retains input', async () => {
+    vi.stubGlobal('fetch', vi.fn()
+      .mockResolvedValueOnce({ status: 429, ok: false })
+      .mockResolvedValueOnce({ status: 200, ok: true, json: async () => ({ ok: true }) }));
+    render(<InvisFieldingLandingPage signupEndpoint="https://test.example/signup" />);
+    fill(); submit();
+    expect((await screen.findByRole('alert')).textContent).toMatch(/wait a minute/);
+    expect(screen.getByLabelText('Email address').value).toBe('Person@Example.com');
+    submit(); await screen.findByText('You’re on the interest list.');
+  });
 });

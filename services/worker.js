@@ -16,6 +16,16 @@ export default {
       return new Response(null, { status: 204, headers });
     }
     if (request.method !== 'POST') return reply(405, { ok: false, error: 'Method not allowed.' });
+    if (!env.DB || !env.SIGNUP_RATE_LIMITER) return reply(503, { ok: false, error: 'Registration unavailable.' });
+    const ip = request.headers.get('CF-Connecting-IP');
+    if (!ip) return reply(503, { ok: false, error: 'Registration unavailable.' });
+    try {
+      const { success } = await env.SIGNUP_RATE_LIMITER.limit({ key: `signup:${ip}` });
+      if (!success) {
+        headers['Retry-After'] = '60';
+        return reply(429, { ok: false, error: 'Too many requests. Please wait a minute and try again.' });
+      }
+    } catch { return reply(503, { ok: false, error: 'Registration unavailable.' }); }
     if (!request.headers.get('Content-Type')?.toLowerCase().startsWith('application/json')) return reply(415, { ok: false, error: 'JSON required.' });
     // Bound the actual body, including requests with absent or inaccurate Content-Length.
     let raw = '';
@@ -40,18 +50,11 @@ export default {
       email = typeof payload?.email === 'string' ? payload.email.trim().toLowerCase() : '';
     } catch { return reply(400, { ok: false, error: 'Invalid request.' }); }
     if (email.length > 254 || !emailPattern.test(email)) return reply(400, { ok: false, error: 'Valid email required.' });
-    if (!env.APPS_SCRIPT_URL || !env.SIGNUP_SECRET) return reply(503, { ok: false, error: 'Registration unavailable.' });
     try {
-      const url = new URL(env.APPS_SCRIPT_URL);
-      if (url.protocol !== 'https:' || url.hostname !== 'script.google.com' || !/^\/macros\/s\/[^/]+\/exec$/.test(url.pathname)) throw new Error('Invalid configuration');
-      const upstream = await fetch(url, {
-        method: 'POST', redirect: 'follow',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, secret: env.SIGNUP_SECRET }),
-        signal: AbortSignal.timeout(15000),
-      });
-      const result = await upstream.json();
-      if (!upstream.ok || result.ok !== true) throw new Error('Storage not acknowledged');
+      const result = await env.DB.prepare(
+        'INSERT INTO signups (email) VALUES (?) ON CONFLICT(email) DO NOTHING'
+      ).bind(email).run();
+      if (result.success !== true) throw new Error('Storage not acknowledged');
       return reply(200, { ok: true });
     } catch { return reply(503, { ok: false, error: 'Could not confirm signup. Please retry.' }); }
   },
