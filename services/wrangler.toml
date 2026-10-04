@@ -1,0 +1,7 @@
+name = "shield-ai-signup"
+main = "worker.js"
+compatibility_date = "2026-10-03"
+
+[vars]
+ALLOWED_ORIGINS = "https://YOUR-USERNAME.github.io"
+# Set APPS_SCRIPT_URL and SIGNUP_SECRET using `wrangler secret put`.

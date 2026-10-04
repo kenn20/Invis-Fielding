@@ -1,0 +1,2 @@
+APPS_SCRIPT_URL=https://script.google.com/macros/s/YOUR-DEPLOYMENT-ID/exec
+SIGNUP_SECRET=replace-with-a-long-random-secret
