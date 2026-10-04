@@ -1,6 +1,8 @@
-# Shield AI
+# Invis-Fielding
 
 Concept-stage React + Tailwind landing page. iPhone and Android first; additional hardware integrations are planned. No custom wearable, launch date, or working safety capability is claimed.
+
+The landing page includes an interactive, four-step concept workflow with sample data: preparation, capture, trusted-contact alert preview, and record review. It does not access sensors or send alerts.
 
 ## Run locally
 
@@ -15,7 +17,7 @@ npm run build
 
 Browser checks: run `npx playwright install chromium`, then `npm run test:browser` with no existing server on port 5173. They cover mobile/desktop layout, automated WCAG scans, keyboard entry, and mocked submission/retry flows. Google service behavior is mocked in automated tests; a real Sheet write must still be verified after deployment.
 
-The complete reusable page is `src/ShieldLandingPage.jsx`. Import it into any React application with Tailwind enabled and render `<ShieldLandingPage signupEndpoint="https://YOUR-WORKER.workers.dev/signup" />`. All components, icons, classes, and hooks live in this file. No icon packages or remote assets are needed. The included Vite wrapper reads `VITE_SIGNUP_ENDPOINT` from `.env.local`; copy `.env.example` and replace its placeholder. This public URL is not a secret. Without configuration the form is disabled, with a visible explanation.
+The complete reusable page is `src/InvisFieldingLandingPage.jsx`. Import it into any React application with Tailwind enabled and render `<InvisFieldingLandingPage signupEndpoint="https://YOUR-WORKER.workers.dev/signup" />`. All components, icons, classes, and hooks live in this file. No icon packages or remote assets are needed. The included Vite wrapper reads `VITE_SIGNUP_ENDPOINT` from `.env.local`; copy `.env.example` and replace its placeholder. This public URL is not a secret. Without configuration the form is disabled, with a visible explanation.
 
 ## Connect a private Google Sheet
 

@@ -52,7 +52,7 @@ function Signup({ signupEndpoint }) {
     {status === 'confirmed' ? <div ref={confirmation} tabIndex={-1} className="rounded-xl py-4 outline-none focus-visible:ring-2 focus-visible:ring-emerald-400" role="status">
       <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-400/10 text-emerald-400"><Icon name="check" className="h-6 w-6" /></span>
       <h2 className="text-2xl font-semibold text-white">You’re on the interest list.</h2>
-      <p className="mt-3 leading-relaxed text-slate-300">We’ll email you when Shield AI is available.</p>
+      <p className="mt-3 leading-relaxed text-slate-300">We’ll email you when Invis-Fielding is available.</p>
       <p className="mt-6 text-sm text-slate-400">Thanks for helping shape what comes next.</p>
     </div> : <>
       <div className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.18em] text-amber-300"><span className="h-1.5 w-1.5 rounded-full bg-amber-300" /> Be here from the beginning</div>
@@ -75,14 +75,14 @@ function Signup({ signupEndpoint }) {
 }
 
 function PhoneConcept() {
-  return <figure className="relative mx-auto flex min-h-[440px] w-full pb-10 max-w-lg items-center justify-center" aria-label="Concept illustration of Shield AI on a phone; not a working product">
+  return <figure className="relative mx-auto flex min-h-[440px] w-full pb-10 max-w-lg items-center justify-center" aria-label="Concept illustration of Invis-Fielding on a phone; not a working product">
     <div className="absolute h-80 w-80 rounded-full bg-emerald-400/5 blur-3xl" />
     <div className="absolute h-[340px] w-[340px] rounded-full border border-emerald-300/10 sm:h-[410px] sm:w-[410px]" />
     <div className="absolute h-64 w-64 rounded-full border border-white/5 sm:h-80 sm:w-80" />
     <div className="relative w-56 -rotate-6 rounded-[2.5rem] border border-slate-600 bg-gradient-to-br from-slate-700 to-slate-950 p-2.5 shadow-[0_30px_80px_rgba(0,0,0,0.6)] sm:w-64">
       <div className="overflow-hidden rounded-[2rem] border border-white/5 bg-slate-950 px-5 pb-6 pt-3">
         <div className="mx-auto mb-7 h-4 w-20 rounded-full bg-black" />
-        <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-slate-400"><span>Shield AI</span><span className="h-1.5 w-1.5 rounded-full bg-emerald-300" /></div>
+        <div className="flex items-center justify-between text-[10px] uppercase tracking-widest text-slate-400"><span>Invis-Fielding</span><span className="h-1.5 w-1.5 rounded-full bg-emerald-300" /></div>
         <div className="mx-auto mb-5 mt-8 flex h-24 w-24 items-center justify-center rounded-full border border-emerald-300/20 bg-emerald-300/5 shadow-[0_0_40px_rgba(52,211,153,0.08)]"><Icon className="h-12 w-12 text-emerald-300" /></div>
         <p className="text-center text-lg font-medium text-white">A shield within reach.</p>
         <p className="mt-2 text-center text-[10px] text-slate-400">Capture. Connect. Keep a record.</p>
@@ -96,13 +96,45 @@ function PhoneConcept() {
   </figure>;
 }
 
+const workflow = [
+  { title: 'Prepare your safety circle', icon: 'shield', action: 'Simulate an incident', status: 'Ready for your journey', detail: 'Before heading out, you would choose a trusted contact and enable the permissions needed for capture and location sharing.', benefit: 'Decide who to reach before a stressful moment.', record: 'Trusted contact: Alex · Capture permissions enabled' },
+  { title: 'Preserve the moment', icon: 'buffer', action: 'Preview contact alert', status: 'Incident captured · Simulation', detail: 'A user-triggered capture would preserve the incident and available rolling-buffer context, helping you keep the moments leading up to it.', benefit: 'Keep context that can be difficult to recall later.', record: 'Sample incident · 8:42 PM · Context attached' },
+  { title: 'Reach someone you trust', icon: 'alert', action: 'Review the sample record', status: 'Alert preview · Not sent', detail: 'Your chosen contact would receive an alert with your location when permissions and connectivity allow. This demo sends no messages.', benefit: 'Give someone you trust context to check in with you.', record: 'To Alex: I need a check-in. My shared location is attached.' },
+  { title: 'Organize your next step', icon: 'folder', action: 'Restart demo', status: 'Sample record ready for review', detail: 'Review captured context, timestamps, and your own notes in one place. Planned export tools would let you choose what to share with a professional.', benefit: 'Build a clearer record for a conversation or follow-up.', record: 'Sample record · Capture + timestamp + notes · Export preview' },
+];
+
+function WorkflowDemo() {
+  const [step, setStep] = useState(0);
+  const current = workflow[step];
+  return <section id="workflow" aria-labelledby="workflow-heading" className="mx-auto max-w-7xl scroll-mt-28 px-5 py-20 sm:px-8 lg:px-12">
+    <p className="text-xs uppercase tracking-[0.2em] text-emerald-300">How it would help protect you</p>
+    <h2 id="workflow-heading" className="mt-4 text-3xl font-medium tracking-tight text-white sm:text-4xl">From an uncertain moment to a clearer next step.</h2>
+    <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-400">Try a sample evening journey. See how Invis-Fielding is being designed to help you preserve context, reach support, and keep a record.</p>
+    <p className="mt-3 text-xs leading-6 text-amber-200">Interactive concept demo · Sample data only. No recording, location access, or alerts.</p>
+    <div className="mt-9 grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+      <ol className="grid gap-3" aria-label="Workflow steps">{workflow.map((item, index) => <li key={item.title}><button type="button" onClick={() => setStep(index)} aria-current={step === index ? 'step' : undefined} className={`flex min-h-16 w-full items-center gap-4 rounded-xl border p-4 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300 ${step === index ? 'border-emerald-300/50 bg-emerald-300/10 text-white' : 'border-white/10 bg-slate-900/40 text-slate-300 hover:bg-slate-800/50'}`}><span className="font-mono text-sm text-emerald-300">0{index + 1}</span><span className="text-sm font-medium">{item.title}</span><Icon name={item.icon} className="ml-auto h-5 w-5 shrink-0 text-emerald-300" /></button></li>)}</ol>
+      <div className="rounded-2xl border border-white/10 bg-slate-900/60 p-6 sm:p-8">
+        <div aria-live="polite" aria-atomic="true">
+          <p className="text-xs font-medium text-emerald-300">Step {step + 1} of 4 · {current.status}</p>
+          <h3 className="mt-5 text-2xl font-medium text-white">{current.title}</h3>
+          <p className="mt-4 text-sm leading-7 text-slate-300">{current.detail}</p>
+          <div className="mt-5 rounded-xl border border-white/10 bg-slate-950/70 p-4"><p className="text-[10px] uppercase tracking-widest text-slate-400">Demo preview</p><p className="mt-2 break-words text-sm leading-6 text-emerald-200">{current.record}</p></div>
+          <p className="mt-5 text-sm leading-6 text-slate-300"><span className="font-medium text-white">Why it helps: </span>{current.benefit}</p>
+        </div>
+        <button type="button" onClick={() => setStep((step + 1) % workflow.length)} className="mt-6 flex min-h-12 items-center gap-3 rounded-lg bg-amber-300 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-amber-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300">{current.action}<Icon name="arrow" /></button>
+      </div>
+    </div>
+    <p className="mt-6 max-w-3xl text-xs leading-6 text-slate-400">These capabilities are planned. Capture and alerts depend on device support, permissions, and connectivity. Alert delivery and a contact’s response are not guaranteed. Invis-Fielding cannot guarantee your safety or replace emergency services.</p>
+  </section>;
+}
+
 const features = [
   { number: '01', icon: 'buffer', title: 'Keep the moments before.', description: 'Planned rolling buffering to help preserve context leading up to a user-triggered incident capture.', detail: 'Incident buffering' },
   { number: '02', icon: 'alert', title: 'Reach someone you trust.', description: 'A planned user-triggered alert to a chosen contact, with location where permissions and connectivity allow.', detail: 'Trusted-contact alerts' },
   { number: '03', icon: 'folder', title: 'Make your record clearer.', description: 'Planned tools to organize captured incidents and export records for review or sharing with a professional.', detail: 'Organized evidence exports' },
 ];
 
-export default function ShieldLandingPage({ signupEndpoint = '' }) {
+export default function InvisFieldingLandingPage({ signupEndpoint = '' }) {
   function scrollToSignup(event) {
     event.preventDefault();
     const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -114,7 +146,7 @@ export default function ShieldLandingPage({ signupEndpoint = '' }) {
     <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[900px] bg-[radial-gradient(ellipse_at_75%_25%,rgba(16,185,129,0.08),transparent_45%),radial-gradient(ellipse_at_5%_35%,rgba(251,191,36,0.06),transparent_45%)]" />
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/[0.06] bg-slate-950/85 backdrop-blur-xl">
       <nav aria-label="Main navigation" className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-5 sm:px-8 lg:px-12">
-        <a href="#" aria-label="Shield AI home" className="flex items-center gap-2.5 rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300"><Icon className="h-7 w-7 text-amber-300" /><span className="text-sm font-bold tracking-[0.17em] text-white">SHIELD<span className="ml-1 text-amber-300">AI</span></span></a>
+        <a href="#" aria-label="Invis-Fielding home" className="flex items-center gap-2.5 rounded focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300"><Icon className="h-7 w-7 text-amber-300" /><span className="text-xs font-bold tracking-[0.08em] text-white">INVIS<span className="text-amber-300">-FIELDING</span></span></a>
         <span className="hidden text-xs text-slate-400 md:block">A little more agency. Wherever you go.</span>
         <a href="#early-access" onClick={scrollToSignup} className="flex min-h-11 items-center gap-2 rounded-lg border border-white/15 px-3 py-2 text-xs font-medium text-white transition-colors hover:border-amber-300/60 hover:text-amber-200 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300 sm:px-4">Get early access updates<Icon name="arrow" className="hidden h-4 w-4 sm:block" /></a>
       </nav>
@@ -125,16 +157,18 @@ export default function ShieldLandingPage({ signupEndpoint = '' }) {
           <div>
             <div className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-emerald-300/20 bg-emerald-300/5 px-3.5 py-2 text-[10px] font-medium tracking-wide text-emerald-200 sm:text-xs"><span className="h-1.5 w-1.5 rounded-full bg-emerald-300" />In Development · iPhone &amp; Android First</div>
             <h1 className="max-w-2xl text-5xl font-semibold leading-[1.07] tracking-[-0.05em] text-white sm:text-6xl lg:text-[68px]">Your Shield,<br />on the Devices<br /><span className="text-amber-300">You Already Use.</span></h1>
-            <p className="mt-7 max-w-lg text-base leading-7 text-slate-400 sm:text-lg sm:leading-8">When a moment matters, you deserve a way to keep it. We’re developing Shield AI to help you capture incidents, organize evidence, and alert someone you trust.</p>
+            <p className="mt-7 max-w-lg text-base leading-7 text-slate-400 sm:text-lg sm:leading-8">When a moment matters, you deserve a way to keep it. We’re developing Invis-Fielding to help you capture incidents, organize evidence, and alert someone you trust.</p>
+            <a href="#workflow" className="mt-7 inline-flex min-h-12 items-center gap-3 rounded-lg border border-emerald-300/30 bg-emerald-300/5 px-5 py-3 text-sm font-medium text-emerald-200 hover:bg-emerald-300/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300">Try the protection workflow<Icon name="arrow" /></a>
             <div className="mt-8 flex flex-wrap items-center gap-3 text-xs text-slate-300"><span className="rounded-md border border-white/10 bg-white/[0.03] px-3 py-2">iPhone</span><span className="rounded-md border border-white/10 bg-white/[0.03] px-3 py-2">Android</span><span className="ml-1 text-slate-400">More hardware integrations planned</span></div>
           </div>
           <PhoneConcept />
         </div>
         <div className="mt-16 grid items-center gap-9 border-t border-white/10 pt-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
-          <div className="max-w-lg"><p className="text-xs uppercase tracking-[0.2em] text-amber-300">For the next time you wish you had a record.</p><h2 className="mt-5 text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl">You shouldn’t have to<br />piece it all together later.</h2><p className="mt-5 leading-7 text-slate-400">A threat. A recurring incident. An interaction you need to document. Shield AI is being designed to help you preserve context and take your next step with a clearer record.</p><div className="mt-6 flex items-center gap-2 text-sm text-emerald-300"><Icon name="check" className="h-4 w-4" />Your everyday devices. One connected vision.</div></div>
+          <div className="max-w-lg"><p className="text-xs uppercase tracking-[0.2em] text-amber-300">For the next time you wish you had a record.</p><h2 className="mt-5 text-3xl font-medium leading-tight tracking-tight text-white sm:text-4xl">You shouldn’t have to<br />piece it all together later.</h2><p className="mt-5 leading-7 text-slate-400">A threat. A recurring incident. An interaction you need to document. Invis-Fielding is being designed to help you preserve context and take your next step with a clearer record.</p><div className="mt-6 flex items-center gap-2 text-sm text-emerald-300"><Icon name="check" className="h-4 w-4" />Your everyday devices. One connected vision.</div></div>
           <Signup signupEndpoint={signupEndpoint} />
         </div>
       </section>
+      <WorkflowDemo />
       <section aria-labelledby="features-heading" className="border-y border-white/[0.07] bg-slate-900/25">
         <div className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:px-12">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-5"><div><p className="text-xs uppercase tracking-[0.2em] text-emerald-300">The vision</p><h2 id="features-heading" className="mt-4 text-3xl font-medium tracking-tight text-white sm:text-4xl">Built around the moments that matter.</h2></div><span className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-slate-400">Planned capabilities</span></div>
@@ -144,6 +178,6 @@ export default function ShieldLandingPage({ signupEndpoint = '' }) {
       </section>
       <section className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 px-5 py-16 sm:px-8 md:flex-row md:items-center lg:px-12"><div><p className="text-xs uppercase tracking-[0.2em] text-amber-300">Designed to grow with your world</p><h2 className="mt-4 text-2xl font-medium tracking-tight text-white sm:text-3xl">Phone first. A broader ecosystem next.</h2><p className="mt-3 max-w-xl text-sm leading-7 text-slate-400">Starting with iPhone and Android. Our longer-term vision is a hardware-agnostic platform that connects more of the devices you already carry.</p></div><a href="#early-access" onClick={scrollToSignup} className="flex shrink-0 items-center gap-3 rounded-lg border border-amber-300/30 bg-amber-300/5 px-5 py-3.5 text-sm text-amber-200 hover:bg-amber-300/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300">Be part of what’s next<Icon name="arrow" className="h-4 w-4" /></a></section>
     </main>
-    <footer className="border-t border-white/10"><div className="mx-auto max-w-7xl px-5 py-9 sm:px-8 lg:px-12"><div className="mb-5 flex items-center justify-between gap-4"><div className="flex items-center gap-2 text-xs font-semibold tracking-[0.15em] text-slate-300"><Icon className="h-5 w-5 text-amber-300" />SHIELD AI</div><p className="text-xs text-slate-400">In development. Made for your everyday.</p></div><p className="max-w-4xl text-xs leading-6 text-slate-400">Shield AI is a planned safety and evidence organization tool, not a law firm. It does not provide legal advice, guarantee admissibility or legal compliance, or replace emergency services. If you are in immediate danger, contact your local emergency services when safe to do so.</p></div></footer>
+    <footer className="border-t border-white/10"><div className="mx-auto max-w-7xl px-5 py-9 sm:px-8 lg:px-12"><div className="mb-5 flex items-center justify-between gap-4"><div className="flex items-center gap-2 text-xs font-semibold tracking-[0.15em] text-slate-300"><Icon className="h-5 w-5 text-amber-300" />INVIS-FIELDING</div><p className="text-xs text-slate-400">In development. Made for your everyday.</p></div><p className="max-w-4xl text-xs leading-6 text-slate-400">Invis-Fielding is a planned safety and evidence organization tool, not a law firm. It does not provide legal advice, guarantee admissibility or legal compliance, or replace emergency services. If you are in immediate danger, contact your local emergency services when safe to do so.</p></div></footer>
   </div>;
 }
