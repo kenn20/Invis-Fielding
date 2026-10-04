@@ -26,7 +26,7 @@ describe('interest form', () => {
     expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual({ email: 'person@example.com' });
     resolve({ ok: true, json: async () => ({ ok: true }) });
     await screen.findByText('You’re on the interest list.');
-    expect(document.activeElement.getAttribute('role')).toBe('status');
+    await waitFor(() => expect(document.activeElement.getAttribute('role')).toBe('status'));
   });
   it.each([
     ['storage rejection', () => Promise.resolve({ ok: false, json: async () => ({ ok: false }) })],
