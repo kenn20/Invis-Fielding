@@ -35,3 +35,17 @@ test('screenshots and keyboard entry', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 900 });
   await page.screenshot({ path: 'artifacts/mobile.png', fullPage: true });
 });
+
+ test('concept workflow progresses and restarts without sending alerts', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Try the protection workflow' }).click();
+  await expect(page.getByText('Step 1 of 4 · Ready for your journey')).toBeVisible();
+  await page.getByRole('button', { name: 'Simulate an incident' }).click();
+  await expect(page.getByText('Step 2 of 4 · Incident captured · Simulation')).toBeVisible();
+  await page.getByRole('button', { name: 'Preview contact alert' }).click();
+  await expect(page.getByText('Step 3 of 4 · Alert preview · Not sent')).toBeVisible();
+  await page.getByRole('button', { name: 'Review the sample record' }).click();
+  await expect(page.getByText('Step 4 of 4 · Sample record ready for review')).toBeVisible();
+  await page.getByRole('button', { name: 'Restart demo' }).click();
+  await expect(page.getByText('Step 1 of 4 · Ready for your journey')).toBeVisible();
+ });
