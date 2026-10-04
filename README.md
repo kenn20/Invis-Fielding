@@ -50,7 +50,7 @@ npx wrangler whoami
 npx wrangler d1 create invis-fielding-signups
 ```
 
-Verify the intended Cloudflare account before creating resources. Copy the returned database ID into `services/wrangler.toml`, replacing the all-zero placeholder; keep binding name `DB`. Database IDs are not secrets. Do not deploy the placeholder.
+Verify the intended Cloudflare account before creating resources. For a different account, copy the returned database ID into `services/wrangler.toml`; keep binding name `DB`. The checked-in ID belongs to the deployed Invis-Fielding database. Database IDs are not secrets.
 
 ```sh
 npx wrangler d1 migrations apply invis-fielding-signups --remote --config services/wrangler.toml
@@ -92,3 +92,12 @@ Production deployment requires an authenticated Cloudflare account and an actual
 - [D1 setup and Worker bindings](https://developers.cloudflare.com/d1/get-started/)
 - [Workers rate limiting and its accuracy limitations](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/)
 - [GitHub Pages setup](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site)
+
+## Current deployment
+
+- Site: https://kenn20.github.io/Invis-Fielding/
+- Signup endpoint: https://invis-fielding-signup.kenn-chong1.workers.dev/signup
+- Database: `invis-fielding-signups` (binding `DB`).
+- Verified October 4, 2026: real local D1 checks, 23 unit tests, four browser tests, production build, Worker packaging, and two live-page submissions with different email casing producing exactly one production row. The synthetic test row was removed after verification.
+
+The initial Pages deployment used `feat/invis-fielding-workflow` via workflow dispatch. The Pages environment remains restricted to `main`; merge the integration PR for subsequent automatic production deployments.
